@@ -8,8 +8,8 @@
 
 namespace dtl {
 
-template <typename Key, typename Compare = std::less<Key>,
-          typename Alloc = std::allocator<Key> >
+template <typename Key, typename Compare = ::std::less<Key>,
+          typename Alloc = ::std::allocator<Key> >
 class Set {
  public:
   using key_type = Key;
@@ -19,7 +19,7 @@ class Set {
 
   using iterator = typename rep_type::const_iterator;
 
-  struct identity : std::unary_function<value_type, Key> {
+  struct identity : ::std::unary_function<value_type, Key> {
     const Key& operator()(const value_type& x) const { return x; }
   }
 

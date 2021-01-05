@@ -8,20 +8,20 @@
 
 namespace dtl {
 
-template <typename Key, typename T, typename Compare = std::less<Key>,
-          typename Alloc = std::allocator<Key> >
+template <typename Key, typename T, typename Compare = ::std::less<Key>,
+          typename Alloc = ::std::allocator<Key> >
 class Map {
  public:
   using key_type = Key;
   using data_type = T;
   using mapped_type = T;
-  using value_type = std::pair<const Key, T>;
+  using value_type = ::std::pair<const Key, T>;
 
   using key_compare = Compare;
 
   using iterator = typename rep_type::iterator;
 
-  struct select1st : std::unary_function<value_type, Key> {
+  struct select1st : ::std::unary_function<value_type, Key> {
     const Key& operator()(const value_type& x) const { return x.first; }
   }
 

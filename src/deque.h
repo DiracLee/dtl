@@ -7,7 +7,7 @@ namespace dtl {
 
 template <typename _Tp, size_t _BufSz = 0>
 struct DequeIterator {
-  using iterator_category = std::random_access_iterator_tag;
+  using iterator_category = ::std::random_access_iterator_tag;
   using value_type = _Tp;
   using pointer = _Tp *;
   using reference = _Tp &;
@@ -113,7 +113,7 @@ struct DequeIterator {
 };
 
 // vector of pointer to buffer
-template <typename _Tp, typename _Alloc = std::allocator<_Tp>,
+template <typename _Tp, typename _Alloc = ::std::allocator<_Tp>,
           size_t _BufSz = 0>
 class Deque {
  public:

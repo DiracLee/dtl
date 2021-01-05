@@ -1,5 +1,5 @@
-#ifndef DTL_MULTI_MAP_H_
-#define DTL_MULTI_MAP_H_
+#ifndef DTL_MULTIMAP_H_
+#define DTL_MULTIMAP_H_
 
 #include <algorithm>
 #include <memory>
@@ -8,20 +8,20 @@
 
 namespace dtl {
 
-template <typename Key, typename Compare = std::less<Key>,
-          typename Alloc = std::allocator<Key> >
-class MultiMap {
+template <typename Key, typename Compare = ::std::less<Key>,
+          typename Alloc = ::std::allocator<Key> >
+class Multimap {
  public:
   using key_type = Key;
   using data_type = T;
   using mapped_type = T;
-  using value_type = std::pair<const Key, T>;
+  using value_type = ::std::pair<const Key, T>;
 
   using key_compare = Compare;
 
   using iterator = typename rep_type::iterator;
 
-  struct select1st : std::unary_function<value_type, Key> {
+  struct select1st : ::std::unary_function<value_type, Key> {
     const Key& operator()(const value_type& x) const { return x.first; }
   }
 
@@ -34,4 +34,4 @@ class MultiMap {
 
 }  // namespace dtl
 
-#endif  // DTL_MULTI_MAP_H_
+#endif  // DTL_MULTIMAP_H_

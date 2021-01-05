@@ -1,5 +1,5 @@
-#ifndef DTL_MULTI_SET_H_
-#define DTL_MULTI_SET_H_
+#ifndef DTL_MULTISET_H_
+#define DTL_MULTISET_H_
 
 #include <algorithm>
 #include <memory>
@@ -8,9 +8,9 @@
 
 namespace dtl {
 
-template <typename Key, typename Compare = std::less<Key>,
-          typename Alloc = std::allocator<Key> >
-class MultiSet {
+template <typename Key, typename Compare = ::std::less<Key>,
+          typename Alloc = ::std::allocator<Key> >
+class Multiset {
  public:
   using key_type = Key;
   using value_type = Key;
@@ -20,7 +20,7 @@ class MultiSet {
   using iterator = typename rep_type::const_iterator;
 
  private:
-  using rep_type = dtl::RBTree<key_type, value_type, std::identity<value_type>,
+  using rep_type = dtl::RBTree<key_type, value_type, ::std::identity<value_type>,
                                key_compare, Alloc>;
 
   rep_type t;
@@ -28,4 +28,4 @@ class MultiSet {
 
 }  // namespace dtl
 
-#endif  // DTL_MULTI_SET_H_
+#endif  // DTL_MULTISET_H_

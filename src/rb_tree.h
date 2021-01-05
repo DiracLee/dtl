@@ -20,7 +20,7 @@ template <typename Key,         // key
           typename Value,       // key + data
           typename KeyOfValue,  // how to get key from value
           typename Compare,     // how to compare two keys
-          typename Alloc = std::allocator<Value>>
+          typename Alloc = ::std::allocator<Value>>
 class RBTree {
  public:
   using size_type = size_t;

@@ -4,7 +4,7 @@
 namespace dtl {
 
 // Dynamic array-like contrainer of templates
-template <typename _Tp, typename _Alloc = std::allocator<_Tp>>
+template <typename _Tp, typename _Alloc = ::std::allocator<_Tp>>
 class Vector {
  public:
   using value_type = _Tp;

@@ -16,7 +16,7 @@ struct ListNode {
 
 template <typename _Tp>
 struct ListIterator {
-  using iterator_category = std::bidirectional_iterator_tag;
+  using iterator_category = ::std::bidirectional_iterator_tag;
   using value_type = _Tp;
   using pointer = _Tp *;
   using reference = _Tp &;
@@ -37,7 +37,7 @@ struct ListIterator {
   pointer operator->() const;
 };
 
-template <typename _Tp, typename _Alloc = std::allocator<_Tp>>
+template <typename _Tp, typename _Alloc = ::std::allocator<_Tp>>
 class List {
  public:
   using data_type = _Tp;

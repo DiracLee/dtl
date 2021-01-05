@@ -5,7 +5,7 @@
 
 namespace dtl {
 
-template <typename _Tp, typename _Alloc = std::allocator<_Tp>>
+template <typename _Tp, typename _Alloc = ::std::allocator<_Tp>>
 class ForwardList {};
 
 }  // namespace dtl
