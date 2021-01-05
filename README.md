@@ -55,7 +55,7 @@
 
 ## About Me
 
-I'm Dirac, a graduate student from Fudan University.
+I'm Dirac, a CS graduate student from Fudan University.
 
 ---
 
@@ -63,7 +63,7 @@ I'm Dirac, a graduate student from Fudan University.
 
 # <span id="中文">DTL</span>
 
-> Dirac's Template Tibrary
+> Dirac's Template Library
 > - NO allocator, new/delete instead.
 > - NO design pattern, straightforwardness instead.
 > - NO object-oriented, template-oriented instead.

@@ -387,6 +387,470 @@ class Vector {
   void deallocate_();
 };
 
+//========================================================================================
+//                                   API Defination
+//========================================================================================
+
+#define DTL_VECTOR_SIZE_TYPE typename Vector<_Tp>::size_type
+
+#define DTL_VECTOR_ITERATOR typename Vector<_Tp>::iterator
+#define DTL_VECTOR_CONST_ITERATOR typename Vector<_Tp>::const_iterator
+
+#define DTL_VECTOR_REVERSE_ITERATOR typename Vector<_Tp>::reverse_iterator
+#define DTL_VECTOR_CONST_REVERSE_ITERATOR \
+  typename Vector<_Tp>::const_reverse_iterator
+
+#define DTL_VECTOR_REFERENCE typename Vector<_Tp>::reference
+#define DTL_VECTOR_CONST_REFERENCE typename Vector<_Tp>::const_reference
+
+#define DTL_VECTOR_POINTER typename Vector<_Tp>::pointer
+#define DTL_VECTOR_CONST_POINTER typename Vector<_Tp>::const_pointer
+
+//========================================================================================
+///                               Default constructor
+///
+template <typename _Tp>
+Vector<_Tp>::Vector() {}
+
+//========================================================================================
+///                               Copy constructor
+///
+/// @param    other: the from-vector to copy
+///
+template <typename _Tp>
+Vector<_Tp>::Vector(const Vector<_Tp> &other) {}
+
+//========================================================================================
+///                               Move constructor
+///
+/// @param    other: the from-vector to steal
+///
+template <typename _Tp>
+Vector<_Tp>::Vector(Vector<_Tp> &&other) {}
+
+//========================================================================================
+///                               Constructor
+///
+/// @param    n: the initial size of this vector
+///
+template <typename _Tp>
+Vector<_Tp>::Vector(size_type n) {}
+
+//========================================================================================
+///                               Constructor
+///
+/// @param    n: the initial size of this vector
+/// @param    v: the default value to initialize this vector
+///
+template <typename _Tp>
+Vector<_Tp>::Vector(size_type n, value_type v) {}
+
+//========================================================================================
+///                               Constructor
+/// Description:
+///           Copy without the last element of the from-sequence
+///
+/// @param    first: the iterator to the first element of the from-sequence
+/// @param    last: the iterator to the last element of the from-sequence
+///
+template <typename _Tp>
+template <typename InputIterator>
+Vector<_Tp>::Vector(InputIterator first, InputIterator last) {}
+
+//========================================================================================
+///                               Constructor
+///
+/// @param    l: the from-initializer-list
+///
+template <typename _Tp>
+Vector<_Tp>::Vector(::std::initializer_list<_Tp> l) {}
+
+//========================================================================================
+///                               Destructor
+///
+template <typename _Tp>
+Vector<_Tp>::~Vector() {}
+
+//========================================================================================
+///                               Assignment
+///
+template <typename _Tp>
+bool Vector<_Tp>::operator=(::std::initializer_list<_Tp> l) {}
+
+//========================================================================================
+///                               Copy assignment
+///
+template <typename _Tp>
+bool Vector<_Tp>::operator=(const self_type &x) {}
+
+//========================================================================================
+///                               Move assignment
+///
+template <typename _Tp>
+bool Vector<_Tp>::operator=(self_type &&x) {}
+
+//========================================================================================
+///                               Overload opeartor []
+///
+template <typename _Tp>
+DTL_VECTOR_REFERENCE Vector<_Tp>::operator[](size_type n) {}
+
+//========================================================================================
+///                               Overload opeartor []
+///
+template <typename _Tp>
+DTL_VECTOR_CONST_REFERENCE Vector<_Tp>::operator[](size_type n) const {}
+
+//========================================================================================
+///                               Copy and push_back
+///
+template <typename _Tp>
+void Vector<_Tp>::push_back(const value_type &x) {}
+
+//========================================================================================
+///                               Move to push_back
+///
+template <typename _Tp>
+void Vector<_Tp>::push_back(value_type &&x) {}
+
+//========================================================================================
+///                               pop_back
+///
+template <typename _Tp>
+void Vector<_Tp>::pop_back() {}
+
+//========================================================================================
+///                               reserve
+/// Description:
+///           Reallocate and copy memory if n > than capacity(), otherwise, do
+///           nothing
+///
+template <typename _Tp>
+void Vector<_Tp>::reserve(size_type n) {}
+
+//========================================================================================
+///                               resize
+/// Description:
+///           Move finish_ only if new_size < capicity(), otherwise,
+///           reallocate and copy memory
+///
+template <typename _Tp>
+void Vector<_Tp>::resize(size_type new_size) {}
+
+//========================================================================================
+///                               resize
+/// Description:
+///           Move finish_ only if new_size < size(), otherwise,
+///           if new_size < capicity(), fill the new access with x, otherwise,
+///           reallocate and copy memory
+///
+template <typename _Tp>
+void Vector<_Tp>::resize(size_type new_size, const value_type &x) {}
+
+//========================================================================================
+///                               shrink_to_fit
+/// Description:
+///           Reallocate and copy memory to make capicity() == size()
+///
+template <typename _Tp>
+void Vector<_Tp>::shrink_to_fit() {}
+
+//========================================================================================
+///                               swap
+template <typename _Tp>
+void Vector<_Tp>::swap(const self_type &x) {}
+
+//========================================================================================
+///                               emplace
+/// Description:
+///           Insert at the position with a value initialized by args
+///
+template <typename _Tp>
+template <typename... _Args>
+void Vector<_Tp>::emplace(const_iterator position, _Args &&... args) {}
+
+//========================================================================================
+///                               emplace_back
+/// Description:
+///           Insert as back with a value initialized by args
+///
+template <typename _Tp>
+template <typename... _Args>
+void Vector<_Tp>::emplace_back(_Args &&... args) {}
+
+//========================================================================================
+///                               insert
+/// Description:
+///           Insert at the position with values of initializer_list
+///
+template <typename _Tp>
+DTL_VECTOR_ITERATOR Vector<_Tp>::insert(const_iterator position,
+                                        ::std::initializer_list<value_type> l) {
+}
+
+//========================================================================================
+///                               insert
+/// Description:
+///           Insert at the position with values of range [first, last)
+///
+template <typename _Tp>
+template <typename _InputIterator>
+DTL_VECTOR_ITERATOR Vector<_Tp>::insert(const_iterator position,
+                                        _InputIterator first,
+                                        _InputIterator last) {}
+
+//========================================================================================
+///                               insert
+/// Description:
+///           Insert at the position with value copied from x
+///
+template <typename _Tp>
+DTL_VECTOR_ITERATOR Vector<_Tp>::insert(const_iterator position,
+                                        const value_type &x) {}
+
+//========================================================================================
+///                               insert
+/// Description:
+///           Insert at the position with value stolen from x
+///
+template <typename _Tp>
+DTL_VECTOR_ITERATOR Vector<_Tp>::insert(const_iterator position,
+                                        value_type &&x) {}
+
+//========================================================================================
+///                               insert
+/// Description:
+///           Insert at the position with n values of x
+///
+template <typename _Tp>
+DTL_VECTOR_ITERATOR Vector<_Tp>::insert(const_iterator position, size_type n,
+                                        const value_type &x) {}
+
+//========================================================================================
+///                               erase
+/// Description:
+///           Erase range [first, last) of this vector
+///
+template <typename _Tp>
+DTL_VECTOR_ITERATOR Vector<_Tp>::erase(const_iterator first,
+                                       const_iterator last) {}
+
+//========================================================================================
+///                               erase
+/// Description:
+///           Erase the element in the position
+///
+template <typename _Tp>
+DTL_VECTOR_ITERATOR Vector<_Tp>::erase(const_iterator position) {}
+
+//========================================================================================
+///                               Range iterators
+///
+template <typename _Tp>
+DTL_VECTOR_CONST_ITERATOR Vector<_Tp>::begin() const {}
+
+template <typename _Tp>
+DTL_VECTOR_ITERATOR Vector<_Tp>::begin() {}
+
+template <typename _Tp>
+DTL_VECTOR_CONST_ITERATOR Vector<_Tp>::end() const {}
+
+template <typename _Tp>
+DTL_VECTOR_ITERATOR Vector<_Tp>::end() {}
+
+//========================================================================================
+///                               Const range iterators
+///
+template <typename _Tp>
+DTL_VECTOR_CONST_ITERATOR Vector<_Tp>::cbegin() const {}
+
+template <typename _Tp>
+DTL_VECTOR_CONST_ITERATOR Vector<_Tp>::cend() const {}
+
+//========================================================================================
+///                               Reverse range iterators
+///
+template <typename _Tp>
+DTL_VECTOR_CONST_REVERSE_ITERATOR Vector<_Tp>::rbegin() const {}
+
+template <typename _Tp>
+DTL_VECTOR_REVERSE_ITERATOR Vector<_Tp>::rbegin() {}
+
+template <typename _Tp>
+DTL_VECTOR_CONST_REVERSE_ITERATOR Vector<_Tp>::rend() const {}
+
+template <typename _Tp>
+DTL_VECTOR_REVERSE_ITERATOR Vector<_Tp>::rend() {}
+
+//========================================================================================
+///                               Const reverse range iterators
+///
+template <typename _Tp>
+DTL_VECTOR_CONST_REVERSE_ITERATOR Vector<_Tp>::crbegin() const {}
+
+template <typename _Tp>
+DTL_VECTOR_CONST_REVERSE_ITERATOR Vector<_Tp>::crend() const {}
+
+//========================================================================================
+///                               assign
+/// Description:
+///           Reconstruct this vector with initializer_list
+///
+template <typename _Tp>
+void Vector<_Tp>::assign(::std::initializer_list<_Tp> l) {}
+
+//========================================================================================
+///                               assign
+/// Description:
+///           Reconstruct this vector with values of range [first, last)
+///
+template <typename _Tp>
+template <typename InputIterator>
+void Vector<_Tp>::assign(InputIterator first, InputIterator last) {}
+
+//========================================================================================
+///                               assign
+/// Description:
+///           Reconstruct this vector with n values of v
+///
+template <typename _Tp>
+void Vector<_Tp>::assign(size_type n, value_type v) {
+  if (this->start_ != nullptr) delete[] this->start_;
+  this->start_ = new value_type[n];
+}
+
+//========================================================================================
+///                               at
+/// Description:
+///           Return const reference of the element indixed by n
+///
+template <typename _Tp>
+DTL_VECTOR_CONST_REFERENCE Vector<_Tp>::at(size_type n) const {
+  assert(n < this->size());
+  return *(this->start_ + n);
+}
+
+//========================================================================================
+///                               at
+/// Description:
+///           Return reference of the element indixed by n
+///
+template <typename _Tp>
+DTL_VECTOR_REFERENCE Vector<_Tp>::at(size_type n) {
+  assert(n < this->size());
+  return *(this->start_ + n);
+}
+
+//========================================================================================
+///                               front
+/// Description:
+///           Return const reference of the front element
+///
+template <typename _Tp>
+DTL_VECTOR_CONST_ITERATOR Vector<_Tp>::front() const {
+  assert(!(this->empty()));
+  return *(this->start_);
+}
+
+//========================================================================================
+///                               front
+/// Description:
+///           Return reference of the front element
+///
+template <typename _Tp>
+DTL_VECTOR_REFERENCE Vector<_Tp>::front() {
+  assert(!(this->empty()));
+  return *(this->start_);
+}
+
+//========================================================================================
+///                               back
+/// Description:
+///           Return const reference of the back element
+///
+template <typename _Tp>
+DTL_VECTOR_CONST_REFERENCE Vector<_Tp>::back() const {
+  assert(!(this->empty()));
+  return *(this->finish_ - 1);
+}
+
+//========================================================================================
+///                               back
+/// Description:
+///           Return reference of the back element
+///
+template <typename _Tp>
+DTL_VECTOR_REFERENCE Vector<_Tp>::back() {
+  assert(!(this->empty()));
+  return *(this->finish_ - 1);
+}
+
+//========================================================================================
+///                               data
+/// Description:
+///           Return the base pointer of allocated memory
+///
+template <typename _Tp>
+DTL_VECTOR_POINTER Vector<_Tp>::data() {
+  return this->start_;
+}
+
+//========================================================================================
+///                               data
+/// Description:
+///           Return the base const pointer of allocated memory
+///
+template <typename _Tp>
+DTL_VECTOR_CONST_POINTER Vector<_Tp>::data() const {
+  return this->start_;
+}
+
+//========================================================================================
+///                               size
+/// Description:
+///           Return the count of accessible elements
+///
+template <typename _Tp>
+DTL_VECTOR_SIZE_TYPE Vector<_Tp>::size() const {
+  return static_cast<DTL_VECTOR_SIZE_TYPE>(this->finish_ - this->start_);
+}
+
+//========================================================================================
+///                               capacity
+/// Description:
+///           Return the scale of allocated memory
+///
+template <typename _Tp>
+DTL_VECTOR_SIZE_TYPE Vector<_Tp>::capacity() const {
+  return static_cast<DTL_VECTOR_SIZE_TYPE>(this->end_of_storage_ -
+                                           this->start_);
+}
+
+//========================================================================================
+///                               empty
+///
+template <typename _Tp>
+bool Vector<_Tp>::empty() const {
+  return this->start_ == nullptr;
+}
+
+//========================================================================================
+///                               clear
+/// Description:
+///           Deallocate all memory of data
+/// Caution:
+///           If data type is pointer, this function won't clear the memory
+///           that these pointer pointing at, pointer management is user's
+///           responsibility
+///
+template <typename _Tp>
+void Vector<_Tp>::clear() {
+  delete[] this->start_;
+  this->start_ = nullptr;
+  this->finish_ = nullptr;
+  this->end_of_storage_ = nullptr;
+}
+
 }  // namespace dtl
 
 #endif  // DTL_VECTOR_H_
