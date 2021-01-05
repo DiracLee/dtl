@@ -633,7 +633,13 @@ DTL_VECTOR_ITERATOR Vector<_Tp>::insert(const_iterator position, size_type n,
 ///
 template <typename _Tp>
 DTL_VECTOR_ITERATOR Vector<_Tp>::erase(const_iterator first,
-                                       const_iterator last) {}
+                                       const_iterator last) {
+  if (last != this->end()) 
+    ::std::copy(last, this->end(), first);
+
+  this->finish_ -= (last - first);
+  return first;
+}
 
 //========================================================================================
 ///                               erase
@@ -641,55 +647,85 @@ DTL_VECTOR_ITERATOR Vector<_Tp>::erase(const_iterator first,
 ///           Erase the element in the position
 ///
 template <typename _Tp>
-DTL_VECTOR_ITERATOR Vector<_Tp>::erase(const_iterator position) {}
+DTL_VECTOR_ITERATOR Vector<_Tp>::erase(const_iterator position) {
+  if (position + 1 != this->end())
+    ::std::copy(position + 1, this->end(), position);
+
+  --this->finish_;
+  return position;
+}
 
 //========================================================================================
 ///                               Range iterators
 ///
 template <typename _Tp>
-DTL_VECTOR_CONST_ITERATOR Vector<_Tp>::begin() const {}
+DTL_VECTOR_CONST_ITERATOR Vector<_Tp>::begin() const {
+  return this->start_;
+}
 
 template <typename _Tp>
-DTL_VECTOR_ITERATOR Vector<_Tp>::begin() {}
+DTL_VECTOR_ITERATOR Vector<_Tp>::begin() {
+  return this->start_;
+}
 
 template <typename _Tp>
-DTL_VECTOR_CONST_ITERATOR Vector<_Tp>::end() const {}
+DTL_VECTOR_CONST_ITERATOR Vector<_Tp>::end() const {
+  return this->finish_;
+}
 
 template <typename _Tp>
-DTL_VECTOR_ITERATOR Vector<_Tp>::end() {}
+DTL_VECTOR_ITERATOR Vector<_Tp>::end() {
+  return this->finish_;
+}
 
 //========================================================================================
 ///                               Const range iterators
 ///
 template <typename _Tp>
-DTL_VECTOR_CONST_ITERATOR Vector<_Tp>::cbegin() const {}
+DTL_VECTOR_CONST_ITERATOR Vector<_Tp>::cbegin() const {
+  return this->start_;
+}
 
 template <typename _Tp>
-DTL_VECTOR_CONST_ITERATOR Vector<_Tp>::cend() const {}
+DTL_VECTOR_CONST_ITERATOR Vector<_Tp>::cend() const {
+  return this->finish_;
+}
 
 //========================================================================================
 ///                               Reverse range iterators
 ///
 template <typename _Tp>
-DTL_VECTOR_CONST_REVERSE_ITERATOR Vector<_Tp>::rbegin() const {}
+DTL_VECTOR_CONST_REVERSE_ITERATOR Vector<_Tp>::rbegin() const {
+  return reverse_iterator(this->end());
+}
 
 template <typename _Tp>
-DTL_VECTOR_REVERSE_ITERATOR Vector<_Tp>::rbegin() {}
+DTL_VECTOR_REVERSE_ITERATOR Vector<_Tp>::rbegin() {
+  return reverse_iterator(this->end());
+}
 
 template <typename _Tp>
-DTL_VECTOR_CONST_REVERSE_ITERATOR Vector<_Tp>::rend() const {}
+DTL_VECTOR_CONST_REVERSE_ITERATOR Vector<_Tp>::rend() const {
+  return reverse_iterator(this->begin());
+}
 
 template <typename _Tp>
-DTL_VECTOR_REVERSE_ITERATOR Vector<_Tp>::rend() {}
+DTL_VECTOR_REVERSE_ITERATOR Vector<_Tp>::rend() {
+  return reverse_iterator(this->begin());
+}
 
 //========================================================================================
 ///                               Const reverse range iterators
 ///
 template <typename _Tp>
-DTL_VECTOR_CONST_REVERSE_ITERATOR Vector<_Tp>::crbegin() const {}
+DTL_VECTOR_CONST_REVERSE_ITERATOR Vector<_Tp>::crbegin() const {
+  return reverse_iterator(this->end());
+}
 
 template <typename _Tp>
-DTL_VECTOR_CONST_REVERSE_ITERATOR Vector<_Tp>::crend() const {}
+DTL_VECTOR_CONST_REVERSE_ITERATOR Vector<_Tp>::crend() const {
+  return reverse_iterator(this->begin());
+}
 
 //========================================================================================
 ///                               assign
@@ -697,7 +733,19 @@ DTL_VECTOR_CONST_REVERSE_ITERATOR Vector<_Tp>::crend() const {}
 ///           Reconstruct this vector with initializer_list
 ///
 template <typename _Tp>
-void Vector<_Tp>::assign(::std::initializer_list<_Tp> l) {}
+void Vector<_Tp>::assign(::std::initializer_list<_Tp> l) {
+  size_type n = l.size();
+  if (this->start_ != nullptr) delete[] this->start_;
+  this->start_ = new value_type[n];
+
+  // if allocate failed, abort
+  assert(this->start_ != nullptr);
+
+  this->end_of_storage_ = this->finish_ = this->start_ + n;
+  DTL_VECTOR_ITERATOR iter = this->begin();
+  ::std::initializer_list<_Tp>::iterator first = l.begin();
+  while (iter != this->end()) *iter++ = *first++;
+}
 
 //========================================================================================
 ///                               assign
@@ -706,7 +754,23 @@ void Vector<_Tp>::assign(::std::initializer_list<_Tp> l) {}
 ///
 template <typename _Tp>
 template <typename InputIterator>
-void Vector<_Tp>::assign(InputIterator first, InputIterator last) {}
+void Vector<_Tp>::assign(InputIterator first, InputIterator last) {
+  // InputIterator's value type should be the same as _Tp
+  using input_value_type =
+      typename ::std::iterator_traits<InputIterator>::value_type;
+  assert(is_same_type<_Tp, input_value_type>::value);
+
+  size_type n = last - first;
+  if (this->start_ != nullptr) delete[] this->start_;
+  this->start_ = new value_type[n];
+
+  // if allocate failed, abort
+  assert(this->start_ != nullptr);
+
+  this->end_of_storage_ = this->finish_ = this->start_ + n;
+  DTL_VECTOR_ITERATOR iter = this->begin();
+  while (iter != this->end()) *iter++ = *first++;
+}
 
 //========================================================================================
 ///                               assign
@@ -717,6 +781,12 @@ template <typename _Tp>
 void Vector<_Tp>::assign(size_type n, value_type v) {
   if (this->start_ != nullptr) delete[] this->start_;
   this->start_ = new value_type[n];
+
+  // if allocate failed, abort
+  assert(this->start_ != nullptr);
+
+  this->end_of_storage_ = this->finish_ = this->start_ + n;
+  for (auto iter = this->begin(); iter != this->end(); ++iter) *iter = v;
 }
 
 //========================================================================================

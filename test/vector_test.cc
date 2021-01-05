@@ -1,13 +1,11 @@
 // Run with:
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//   g++ vector_test.cc -o ../build/vector_test -lgtest -lgtest_main -lpthread
-//   ../build/vector_test
+//   g++ vector_test.cc -o ../build/test -lgtest -lgtest_main -lpthread
+//   ../build/test
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 //
 
 #include "../src/vector.h"
-
-#include <iostream>
 
 #include "gtest/gtest.h"
 
@@ -29,11 +27,21 @@ TEST_F(StlVectorTestSuite, AllFunc) {
   ::std::reverse_iterator<::std::vector<float>::iterator> rit;
 
   v2.reserve(10);
-  ASSERT_EQ(v2.size(), 0);
+  // ASSERT_EQ(v2.size(), 0);
 
   int *p = new int[3]{10};
 
-  ASSERT_EQ(sizeof(p), 8);
+  // ASSERT_EQ(sizeof(p), 8);
+
+  ::std::vector<double> v11(5);
+  auto iter11 = v11.begin();
+  auto iter2 = v2.begin();
+  while (iter11 != v11.end()) *iter11++ = *iter2++;
+  for (int i = 0; i < v2.size(); i++) {
+    ASSERT_EQ(v2[i], v11[i]);
+  }
+
+  v2.rend();
 }
 
 // class DtlVectorTestSuite : public ::testing::Test {
