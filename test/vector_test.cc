@@ -1,10 +1,10 @@
 // Run with:
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//      g++ vector_test.cc -o ../build/vector_test -lgtest -lgtest_main
-//      -lpthread
-//      ../build/vector_test
+//   g++ vector_test.cc -o ../build/vector_test -lgtest -lgtest_main -lpthread
+//   ../build/vector_test
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 //
+
 #include "../src/vector.h"
 
 #include <iostream>
@@ -31,6 +31,9 @@ TEST_F(StlVectorTestSuite, AllFunc) {
   v2.reserve(10);
   ASSERT_EQ(v2.size(), 0);
 
+  int *p = new int[3]{10};
+
+  ASSERT_EQ(sizeof(p), 8);
 }
 
 // class DtlVectorTestSuite : public ::testing::Test {
