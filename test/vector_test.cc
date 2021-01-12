@@ -46,17 +46,56 @@ TEST_F(StlVectorTestSuite, AllFunc) {
   v2.reserve(10);
   v1 = v2;
 
-  ASSERT_EQ(v2.capacity(), v1.capacity());
+  // ASSERT_EQ(v2.capacity(), v1.capacity());
 
+  // ::std::iterator_traits<decltype(v2.begin())>::iterator_category;
+  // ::std::iterator_traits<decltype(v2.begin())>::difference_type;
+  // ::std::iterator_traits<decltype(v2.begin())>::value_type;
+  // ::std::iterator_traits<decltype(v2.begin())>::reference;
+  // ::std::iterator_traits<decltype(v2.begin())>::pointer;
 
-  ::std::iterator_traits<decltype(v2.begin())>::iterator_category;
-  ::std::iterator_traits<decltype(v2.begin())>::difference_type;
-  ::std::iterator_traits<decltype(v2.begin())>::value_type;
-  ::std::iterator_traits<decltype(v2.begin())>::reference;
-  ::std::iterator_traits<decltype(v2.begin())>::pointer;
+  using TYPE = int;
+  {
+    using TYPE = float;
+    TYPE b = 5.2;
+    ASSERT_LE(b - 5.2, 0.001);
+  }
+
+  TYPE a = 5.2;
+  ASSERT_EQ(a, 5);
 }
 
-// class DtlVectorTestSuite : public ::testing::Test {
-//  protected:
-//   ::dtl::Vector<int> v;
-// };
+class DtlVectorTestSuite : public ::testing::Test {
+ protected:
+  ::std::vector<double> v0{2., 4., 6., 8., 10.};
+
+  ::dtl::Vector<double> v1;
+  ::dtl::Vector<double> v2{1., 2., 3., 4., 5.};
+  ::dtl::Vector<double> v3{4};
+  ::dtl::Vector<double> v4{4, 3.14};
+  ::dtl::Vector<double> v5{v0.begin(), v0.end()};
+  ::dtl::Vector<double> v6{v3};
+  ::dtl::Vector<double> v7{::std::move(v3)};
+};
+
+TEST_F(DtlVectorTestSuite, DefaultConstructor) { ::dtl::Vector<double> v; }
+
+TEST_F(DtlVectorTestSuite, ILConstructor) {
+  ::dtl::Vector<double> v{1., 2., 3., 4., 5.};
+}
+
+TEST_F(DtlVectorTestSuite, SizeConstructor) { ::dtl::Vector<double> v{4}; }
+
+TEST_F(DtlVectorTestSuite, SizeValueConstructor) {
+  ::dtl::Vector<double> v3{4, 3.14};
+}
+
+TEST_F(DtlVectorTestSuite, IteratorConstructor) {
+  ::dtl::Vector<double> v{v0.begin(), v0.end()};
+}
+
+TEST_F(DtlVectorTestSuite, CopyConstructor) { ::dtl::Vector<double> v{v3}; }
+
+TEST_F(DtlVectorTestSuite, MoveConstructor) {
+  ::dtl::Vector<double> v{::std::move(v3)};
+}

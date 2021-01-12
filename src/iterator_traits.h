@@ -17,11 +17,11 @@ struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
 template <typename _Iterator>
 struct iterator_traits {
-  using iterator_category = _Iterator::iterator_category;
-  using difference_type = _Iterator::difference_type;
-  using value_type = _Iterator::value_type;
-  using reference = _Iterator::reference;
-  using pointer = _Iterator::pointer;
+  using iterator_category = typename _Iterator::iterator_category;
+  using difference_type = typename _Iterator::difference_type;
+  using value_type = typename _Iterator::value_type;
+  using reference = typename _Iterator::reference;
+  using pointer = typename _Iterator::pointer;
 };
 
 template <typename _Tp>
