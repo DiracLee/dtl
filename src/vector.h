@@ -5,6 +5,7 @@
 
 #include "iterator.h"
 #include "type.h"
+#include "type_traits.h"
 
 namespace dtl {
 
@@ -371,7 +372,9 @@ class Vector {
   void clear();
 
  private:
-  iterator start_;           // base pointer of memory allocated
+  iterator start_;  // base pointer of memory allocated
+  size_type size_;
+  size_type capacity_;
   iterator finish_;          // pointer to the next memory of last element
   iterator end_of_storage_;  // upper bound of memory allocated
 
@@ -410,7 +413,7 @@ class Vector {
 ///                               Default constructor
 ///
 template <typename _Tp>
-Vector<_Tp>::Vector() {}
+Vector<_Tp>::Vector() : start_(nullptr), size_(0), capacity_(0) {}
 
 //========================================================================================
 ///                               Copy constructor
@@ -418,7 +421,12 @@ Vector<_Tp>::Vector() {}
 /// @param    other: the from-vector to copy
 ///
 template <typename _Tp>
-Vector<_Tp>::Vector(const Vector<_Tp> &other) {}
+Vector<_Tp>::Vector(const Vector<_Tp> &other)
+    : size_(other.size_), capacity_(other.capacity_) {
+  this->start_ = new _Tp[this->capacity_];
+  for (size_type i = 0; i < this->size_; ++i)
+    *(this->start_ + i) = *(other.start_ + i);
+}
 
 //========================================================================================
 ///                               Move constructor
@@ -426,7 +434,12 @@ Vector<_Tp>::Vector(const Vector<_Tp> &other) {}
 /// @param    other: the from-vector to steal
 ///
 template <typename _Tp>
-Vector<_Tp>::Vector(Vector<_Tp> &&other) {}
+Vector<_Tp>::Vector(Vector<_Tp> &&other)
+    : start_(other.start_), size_(other.size_), capacity_(other.capacity_) {
+  other.start_ = nullptr;
+  other.size_ = 0;
+  other.capacity_ = 0;
+}
 
 //========================================================================================
 ///                               Constructor
@@ -434,7 +447,9 @@ Vector<_Tp>::Vector(Vector<_Tp> &&other) {}
 /// @param    n: the initial size of this vector
 ///
 template <typename _Tp>
-Vector<_Tp>::Vector(size_type n) {}
+Vector<_Tp>::Vector(size_type n) : size_(n), capacity_(n) {
+  this->start_ = new _Tp[this->capacity_];
+}
 
 //========================================================================================
 ///                               Constructor
@@ -443,7 +458,10 @@ Vector<_Tp>::Vector(size_type n) {}
 /// @param    v: the default value to initialize this vector
 ///
 template <typename _Tp>
-Vector<_Tp>::Vector(size_type n, value_type v) {}
+Vector<_Tp>::Vector(size_type n, value_type v) : size_(n), capacity_(n) {
+  this->start_ = new _Tp[this->capacity_];
+  for (size_type i = 0; i < this->size_; ++i) *(this->start_ + i) = v;
+}
 
 //========================================================================================
 ///                               Constructor
@@ -455,7 +473,9 @@ Vector<_Tp>::Vector(size_type n, value_type v) {}
 ///
 template <typename _Tp>
 template <typename InputIterator>
-Vector<_Tp>::Vector(InputIterator first, InputIterator last) {}
+Vector<_Tp>::Vector(InputIterator first, InputIterator last) {
+  
+}
 
 //========================================================================================
 ///                               Constructor
@@ -634,8 +654,7 @@ DTL_VECTOR_ITERATOR Vector<_Tp>::insert(const_iterator position, size_type n,
 template <typename _Tp>
 DTL_VECTOR_ITERATOR Vector<_Tp>::erase(const_iterator first,
                                        const_iterator last) {
-  if (last != this->end()) 
-    ::std::copy(last, this->end(), first);
+  if (last != this->end()) ::std::copy(last, this->end(), first);
 
   this->finish_ -= (last - first);
   return first;
@@ -743,7 +762,7 @@ void Vector<_Tp>::assign(::std::initializer_list<_Tp> l) {
 
   this->end_of_storage_ = this->finish_ = this->start_ + n;
   DTL_VECTOR_ITERATOR iter = this->begin();
-  ::std::initializer_list<_Tp>::iterator first = l.begin();
+  typename ::std::initializer_list<_Tp>::iterator first = l.begin();
   while (iter != this->end()) *iter++ = *first++;
 }
 
@@ -758,7 +777,7 @@ void Vector<_Tp>::assign(InputIterator first, InputIterator last) {
   // InputIterator's value type should be the same as _Tp
   using input_value_type =
       typename ::std::iterator_traits<InputIterator>::value_type;
-  assert(is_same_type<_Tp, input_value_type>::value);
+  assert(::dtl::is_same_type<_Tp, input_value_type>::value);
 
   size_type n = last - first;
   if (this->start_ != nullptr) delete[] this->start_;

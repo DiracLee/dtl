@@ -42,6 +42,11 @@ TEST_F(StlVectorTestSuite, AllFunc) {
   }
 
   v2.rend();
+
+  v2.reserve(10);
+  v1 = v2;
+
+  ASSERT_EQ(v2.capacity(), v1.capacity());
 }
 
 // class DtlVectorTestSuite : public ::testing::Test {

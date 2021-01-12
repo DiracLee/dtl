@@ -5,7 +5,7 @@
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 //
 
-#include "../src/type_trait.h"
+#include "../src/type_traits.h"
 #include "gtest/gtest.h"
 
 TEST(DtlTypeTraitsTest, IsSameType) {
