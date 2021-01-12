@@ -6,6 +6,7 @@
 #include "iterator.h"
 #include "type.h"
 #include "type_traits.h"
+#include "iterator_traits.h"
 
 namespace dtl {
 

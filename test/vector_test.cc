@@ -47,6 +47,13 @@ TEST_F(StlVectorTestSuite, AllFunc) {
   v1 = v2;
 
   ASSERT_EQ(v2.capacity(), v1.capacity());
+
+
+  ::std::iterator_traits<decltype(v2.begin())>::iterator_category;
+  ::std::iterator_traits<decltype(v2.begin())>::difference_type;
+  ::std::iterator_traits<decltype(v2.begin())>::value_type;
+  ::std::iterator_traits<decltype(v2.begin())>::reference;
+  ::std::iterator_traits<decltype(v2.begin())>::pointer;
 }
 
 // class DtlVectorTestSuite : public ::testing::Test {
