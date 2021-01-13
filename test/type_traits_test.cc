@@ -17,3 +17,12 @@ TEST(DtlTypeTraitsTest, IsDifferentType) {
   bool claim = ::dtl::is_same_type<int, float>::value;
   ASSERT_FALSE(claim);
 }
+
+#include <vector>
+
+int main()
+{
+  ::std::vector<double> v(10);
+  ::std::vector<double> v3(4);
+  return 0;
+}

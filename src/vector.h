@@ -52,7 +52,7 @@ class Vector {
   ///
   /// @param    n: the initial size of this vector
   ///
-  Vector(size_type n);
+  explicit Vector(size_type n);
 
   //========================================================================================
   ///                               Constructor
@@ -60,7 +60,7 @@ class Vector {
   /// @param    n: the initial size of this vector
   /// @param    v: the default value to initialize this vector
   ///
-  Vector(size_type n, value_type v);
+  explicit Vector(size_type n, value_type v);
 
   //========================================================================================
   ///                               Constructor
@@ -507,31 +507,53 @@ Vector<_Tp>::~Vector() {
 ///                               Assignment
 ///
 template <typename _Tp>
-bool Vector<_Tp>::operator=(::std::initializer_list<_Tp> l) {}
+bool Vector<_Tp>::operator=(::std::initializer_list<_Tp> l) {
+  this->capacity_ = this->size_ = l.size();
+  this->start_ = new _Tp[this->capacity_];
+  size_type i = 0;
+  for (auto e : l) *(this->start_ + i++) = e;
+}
 
 //========================================================================================
 ///                               Copy assignment
 ///
 template <typename _Tp>
-bool Vector<_Tp>::operator=(const self_type &x) {}
+bool Vector<_Tp>::operator=(const self_type &x) {
+  this->capacity_ = this->size_ = x.size();
+  this->start_ = new _Tp[this->capacity_];
+  size_type i = 0;
+  for (auto e : x) *(this->start_ + i++) = e;
+}
 
 //========================================================================================
 ///                               Move assignment
 ///
 template <typename _Tp>
-bool Vector<_Tp>::operator=(self_type &&x) {}
+bool Vector<_Tp>::operator=(self_type &&x) {
+    this->capacity_ = this->size_ = x.size();
+  this->start_ = new _Tp[this->capacity_];
+  this->start_ = x.start_;
+
+  x.start_ = nullptr;
+  x.size_ = 0;
+  x.capacity_ = 0;
+}
 
 //========================================================================================
 ///                               Overload opeartor []
 ///
 template <typename _Tp>
-DTL_VECTOR_REFERENCE Vector<_Tp>::operator[](size_type n) {}
+DTL_VECTOR_REFERENCE Vector<_Tp>::operator[](size_type n) {
+  return *(this->start_ + n);
+}
 
 //========================================================================================
 ///                               Overload opeartor []
 ///
 template <typename _Tp>
-DTL_VECTOR_CONST_REFERENCE Vector<_Tp>::operator[](size_type n) const {}
+DTL_VECTOR_CONST_REFERENCE Vector<_Tp>::operator[](size_type n) const {
+  return *(this->start_ + n);
+}
 
 //========================================================================================
 ///                               Copy and push_back
